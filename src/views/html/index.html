@@ -1,0 +1,158 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <title>Page Title</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+</head>
+<body>
+    <div id="app">
+        {{message}}
+    </div>
+
+    <div id="app2">
+        <span v-bind:title="message">
+            鼠标放在这里悬停几秒看状态
+        </span>    
+    </div>
+
+    <div id="app3">
+        <span v-if="seen">
+           v-if条件判断
+        </span>
+        <span v-show="seen">
+            v-show条件判断
+        </span>
+    </div>
+
+
+    <div id="app4">
+        <ul>
+            <li v-for="todo in todos">
+                {{ todo.text }}
+            </li> 
+        </ul>
+    </div>
+
+
+    <div id="app5">
+        <p>{{message}}</p>
+        <button @click="reverseMessage">消息逆转</button>
+    </div>
+
+    <div id="app6">
+        <p>{{message}}</p>
+        <input type="text" v-model="message">
+    </div>
+
+
+
+    <div id="app7">
+        <ol>
+            <todo-item
+            v-for="item in groceryList"
+            v-bind:todo="item"
+            v-bind:key="item.key"
+            ></todo-item>
+        </ol>
+    </div>
+
+
+
+
+
+<script src="/node_modules/vue/dist/vue.js"></script>
+<script>
+
+    /* 声明式渲染 */
+    let app = new Vue({
+        el: '#app',
+        data() {
+            return {
+                message: 'hello vue'
+            }
+        }
+    });
+
+    let app2 = new Vue({
+        el: '#app2',
+        data() {
+            return {
+                message: '页面加载于' + new Date().toLocaleString()
+            }
+        }
+    });
+
+
+    /* 条件与循环 */
+    let app3 = new Vue({
+            el: '#app3',
+            data() {
+                return {
+                    seen: true
+                }
+            }
+        });
+
+    let app4 = new Vue({
+            el: '#app4',
+            data() {
+                return {
+                    todos: [
+                        { text: '学习 JavaScript' },
+                        { text: '学习 Vue' },
+                        { text: '整个牛项目' }
+                    ]
+                }
+            }
+        });
+
+    /* 处理用户输入 */
+    let app5 = new Vue({
+            el: '#app5',
+            data() {
+                return {
+                    message: 'Hello Vue.js!'
+                }
+            },
+            methods: {
+                reverseMessage() {
+                    this.message = this.message.split('').reverse().join('');
+                }
+            }
+        });
+
+        let app6 = new Vue({
+            el: '#app6',
+            data() {
+                return {
+                    message: 'Hello Vue.js!'
+                }
+            }
+        });
+
+        /* 组件化处理 */
+        Vue.component('todo-item', {
+            props: ['todo'],
+            template: '<li>{{todo.text}}</li>'
+        });
+
+        let app7 = new Vue({
+            el: '#app7',
+            data() {
+                return {
+                    groceryList: [
+                        { text: '11111111'},
+                        { text: '222222222' },
+                        { text: '333333333333' }
+                    ]
+                    
+                }
+            }
+        });
+
+
+</script>
+</body>
+</html>

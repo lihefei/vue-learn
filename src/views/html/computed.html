@@ -1,0 +1,162 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <title>Page Title</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+</head>
+<body>
+    <div id="example">
+        <p>Original message: "{{ message }}"</p>
+        <p>Computed reversed message: "{{ reversedMessage }}"</p>
+    </div>
+
+    <div id="demo">{{ fullName }}</div>
+    <div id="demo2">{{ fullName }}</div>
+    <div id="demo3">{{ fullName }}</div>
+
+
+    <div id="watchExample">
+        <p>
+            Ask a yes/no question:
+            <input v-model="question">
+        </p>
+        <p>{{ answer }}</p>
+    </div>
+<script src="/node_modules/vue/dist/vue.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/axios@0.12.0/dist/axios.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/lodash@4.13.1/lodash.min.js"></script>
+<script>
+    
+
+    /* 计算属性 */
+    var vm = new Vue({
+            el: '#example',
+            data() {
+                return {
+                    message: 'Hello'
+                };
+            },
+            computed: {
+                reversedMessage() {
+                    return  this.message.split('').reverse().join('');
+                }
+            }
+    });
+
+
+    /* 侦听属性 */
+    var vm = new Vue({
+        el: '#demo',
+        data() {
+            return {
+                firstName: 'foo',
+                lastName: 'bar',
+                fullName: 'foo bar'
+            };
+        },
+        watch: {
+            firstName: function(val) {
+                this.fullName = val + ' ' + this.lastName;
+            },
+            lastName: function(val) {
+                this.fullName = this.firstName + ' ' + val;
+            }
+        }
+    });
+
+    /* 侦听优化为计算属性*/
+    var vm2 = new Vue({
+            el: '#demo2',
+            data() {
+                return {
+                    firstName: 'foo',
+                    lastName: 'bar'
+                };
+            },
+            computed: {
+                fullName: function (val) {
+                    return  this.firstName + ' ' + this.lastName;
+                }
+            }
+        });
+
+    /* 计算属性的getter与setter */
+
+    /* 侦听优化为计算属性 */
+        var vm3 = new Vue({
+            el: '#demo3',
+            data() {
+                return {
+                    firstName: 'foo',
+                    lastName: 'bar'
+                };
+            },
+            computed: {
+                fullName: {
+                    get() {
+                        return this.firstName + ' ' + this.lastName;
+
+                    },
+                    set(newVal) {
+                        let names = newVal.split(' ');
+                        this.firstName = names[0];
+                        this.lastName = names[names.length - 1];
+                    }
+                }
+            }
+        });
+
+
+
+        var watchExampleVm = new Vue({
+            el: '#watchExample',
+            data: {
+                question: '',
+                answer: 'I cannot give you an answer until you ask a question!'
+            },
+            watch: {
+                question: function(newQuestion, oldQuestion) {
+                    this.answer = 'Waiting for you to stop typing...';
+                    this.debouncedGetAnswer();
+                }
+            },
+            created: function() {
+                this.debouncedGetAnswer = _.debounce(this.getAnswer, 500);
+            },
+            methods: {
+                getAnswer: function() {
+                    if (this.question.indexOf('?') === -1) {
+                        this.answer = 'Questions usually contain a question mark. ;-)';
+                        return;
+                    }
+
+                    this.answer = 'Thinking...'
+                    var vm = this;
+                    axios.get('https://yesno.wtf/api')
+                        .then(function (response) {
+                            vm.answer = _.capitalize(response.data.answer)
+                        })
+                        .catch(function (error) {
+                            vm.answer = 'Error! Could not reach the API. ' + error
+                        })
+                }
+            }
+        });
+
+
+
+
+
+    
+
+
+
+
+
+     
+
+</script>
+</body>
+</html>

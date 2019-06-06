@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <title>Page Title</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+</head>
+<body>
+    <div id="app">
+        <h1>{{message}} 我是在默认HTML中</h1>
+    </div>
+<script src="/node_modules/vue/dist/vue.js"></script>
+<script>
+    /*var vm = new Vue({
+        //el: '#app',
+        data() {
+            return {
+                message: 'hello vue'
+            };
+        },
+        beforeCreate() {
+            console.group('beforeCreate');
+            console.log('el: ', this.$el);
+            console.log('data: ', this.$data);
+        },
+        created() {
+            console.group('created');
+            console.log('el: ', this.$el);
+            console.log('data: ', this.$data);
+        },
+        beforeMount() {
+            console.group('beforeMount');
+            console.log('el: ', this.$el);
+            console.log('data: ', this.$data);
+        },
+        mounted() {
+            console.group('mounted');
+            console.log('el: ', this.$el);
+            console.log('data: ', this.$data);
+        },
+        beforeUpdate() {
+            console.group('beforeUpdate');
+            console.log('el.innerHTML: ', this.$el.innerHTML);
+        },
+        updated() {
+            console.group('updated');
+            console.log('el.innerHTML: ', this.$el.innerHTML);
+        },
+        beforeDestroy() {
+            console.group('beforeDestroy');
+            console.log('数据绑定状态，修改message，视图产生变化');
+        },
+        destroyed() {
+            console.group('destroyed');
+            console.log('数据解绑状态，修改message，视图无变化');
+        }
+    });
+    vm.message = 'hello world';
+
+    // vm.$destroy(); //控制台执行销毁实例方法
+    */
+
+    var vm = new Vue({
+            el: '#app',
+            template: '<h1>{{message}} 我是在template中</h1>',
+            render: function (createElement) {
+                return createElement('h1', 'this is createElement');
+            },
+            data() {
+                return {
+                    message: 'hello vue'
+                };
+            },
+            beforeCreate() {
+                console.group('beforeCreate');
+                console.log('el: ', this.$el);
+            },
+            created() {
+                console.group('created');
+                console.log('el: ', this.$el);
+            },
+            beforeMount() {
+                console.group('beforeMount');
+                console.log('el: ', this.$el);
+            },
+            mounted() {
+                console.group('mounted');
+                console.log('el: ', this.$el);
+            }
+        });
+    
+</script>
+</body>
+</html>

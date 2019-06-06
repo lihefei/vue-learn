@@ -1,0 +1,123 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <title>Page Title</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+</head>
+
+<body>
+    <div id="app">
+        <h1><span>Message: {{ msg }}</span></h1>
+        <span v-once> 标签上加上v-once这个属性将不会改变: {{ msg }}</span>
+    </div>
+
+    <div id="app2">
+        <p>用 “Mustache”语法 (双大括号): {{ rawHtml }}</p>
+        <p>用 v-html directive: <span v-html="rawHtml"></span></p>
+    </div>
+
+    <div id="app3">
+        <p v-bind:id="dynamicId">我用了v-bind指定了id</p>
+        <button v-bind:disabled="isButtonDisabled">Button</button>
+    </div>
+
+    <div id="app4">
+        <p> {{num + 1}}</p>
+        <p> {{ num2  }}</p>
+        <p>{{ok ? 'YES' : 'NO'}}</p>
+        <p>{{ msg.split('').reverse().join('') }}</p>
+        <div v-bind:id="'list-' + num">fdfdfdf</div>
+
+    </div>
+
+
+    <div id="app5">
+        <p v-if="seen">现在你看到我了</p>
+        <a v-bind:href="url">...</a>
+        <a v-on:click="doSomething">...</a>
+        <a v-bind:[attr]="url"> ... </a>
+        <a v-on:[event]="doSomething"> ... </a>
+        <form v-on:submit.prevent="doSomething">
+            <button>提交</button>
+        </form>
+        <a :href="url">v-bind缩写</a>
+        <a @click="doSomething">v-on缩写</a>
+
+    </div>
+    <script src="/node_modules/vue/dist/vue.js"></script>
+    <script>
+
+
+        /* 文本 */
+        var vm = new Vue({
+            el: '#app',
+            data() {
+                return {
+                    msg: 'hello vue'
+                };
+            }
+        });
+
+        /* 原始html */
+        var vm = new Vue({
+            el: '#app2',
+            data() {
+                return {
+                    rawHtml: '<b>我是标签</b>'
+                };
+            }
+        });
+
+        /* 特性 */
+        var vm = new Vue({
+            el: '#app3',
+            data() {
+                return {
+                    dynamicId: 'test1',
+                    isButtonDisabled: true,
+                    ok: true
+                };
+            }
+        });
+
+
+        /*  JavaScript 表达式 */
+        var vm = new Vue({
+            el: '#app4',
+            data() {
+                return {
+                    num: 1,
+                    num2: 1,
+                    msg: 'hello world',
+                    ok: true
+                };
+            }
+        });
+
+
+        /* 指令 */
+        var vm = new Vue({
+            el: '#app5',
+            data() {
+                return {
+                    seen: true,
+                    url: 'xxx',
+                    attr: 'href',
+                    event: 'click'
+                };
+            },
+            methods: {
+                doSomething() {
+                    console.log('你好');
+
+                }
+            }
+        });
+
+    </script>
+</body>
+
+</html>

@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <title>Page Title</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+</head>
+
+<body>
+    <div id="app">
+        <div :class="{ active: isActive }">11111111111111</div>
+        <div class="static" v-bind:class="{ active: isActive, 'text-danger': hasError }">2222222222</div>
+        <div v-bind:class="classObject">333333333</div>
+        <div v-bind:class="classObject2">444444444</div>
+        <div :class="[activeClass, errorClass]">5555555555</div>
+        <div :class="isActive ? activeClass : errorClass">666666666</div>
+        <div :class="[{active: isActive}, errorClass]">666666666</div>
+        <my-component class="baz boo"></my-component>
+        <div :style="{color: activeColor, fontSize: fontSize }">fdghfdgfdgf</div>
+        <div :style="styleObject">fdghfdgfdgf</div>
+
+        <div :style="[styleObject, bgObject]">fdghfdgfdgf</div>
+
+        <div :style="{display: ['-webkit-box', '-ms-flexbox', 'flex']}">ggggggggggg</div>
+
+
+    </div>
+    <script src="/node_modules/vue/dist/vue.js"></script>
+    <script>
+        Vue.component('my-component', {
+            template: '<p class="foo bar">Hi</p>'
+        })
+        var vm = new Vue({
+            el: '#app',
+            data() {
+                return {
+                    isActive: true,
+                    hasError: false,
+                    error: false,
+                    classObject: {
+                        active: true,
+                        'text-danger': false
+                    },
+                    activeClass: 'active',
+                    errorClass: 'text-danger',
+                    activeColor: 'red',
+                    fontSize: 30,
+                    styleObject: {
+                        color: 'red',
+                        fontSize: '13px'
+                    },
+                    bgObject: {
+                        backgroundColor: 'blue'
+                    }
+                };
+            },
+            computed: {
+                classObject2: function () {
+                    return {
+                        active: this.isActive && !this.error,
+                        'text-danger': this.error && this.error.type === 'fatal'
+                    }
+                }
+            }
+        });
+        
+
+    </script>
+</body>
+
+</html>
