@@ -10,6 +10,35 @@
 
 <body>
     <div id="app">
+        <h1 v-if="awesome">Vue is awesome!</h1>
+        <h1 v-else>Oh on</h1>
+
+        <template v-if="ok">
+            <h1>Title</h1>
+            <p>Paragraph 1</p>
+            <p>Paragraph 2</p>
+        </template>
+
+        <template v-if="loginType === 'username'">
+            <label>Username</label>
+            <input placeholder="Enter your username">
+        </template>
+        <template v-else>
+            <label>Email</label>
+            <input placeholder="Enter your email address">
+        </template>
+
+        <div>
+            <template v-if="loginType === 'username'">
+                <label>Username</label>
+                <input placeholder="Enter your username" key="username-input">
+            </template>
+            <template v-else>
+                <label>Email</label>
+                <input placeholder="Enter your email address" key="email-input">
+                <input placeholder="Enter your email address" key="email-input">
+            </template>
+        </div>
 
     </div>
     <script src="/node_modules/vue/dist/vue.js"></script>
@@ -19,11 +48,10 @@
             el: '#app',
             data() {
                 return {
-                
+                    awesome: true,
+                    ok: true,
+                    loginType: 'username'
                 };
-            },
-            computed: {
-                
             }
         });
 
