@@ -1,0 +1,153 @@
+
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <title>events</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+</head>
+
+<body>
+    <ul id="example1">
+        <button @click="counter +=1">+++++++++</button>
+        <p>{{counter}}</p>
+
+        <br>
+        <!-- 事件处理调用方式 -->
+        <button @click="greet">事件处理调用方式</button>
+        
+        <br><br>
+        <!-- 内联调用方式 -->
+        <button @click="see('hello')">内联调用方式</button>
+
+        <br><br>
+        <!-- 内联调用方式 -->
+        <button @click="warn('hello', $event)">内联事件综合调用方式</button>
+
+        <br><br>
+        <!-- 阻止单击事件继续传递 -->
+        <a @click.stop="warn('hello', $event)">click.stop阻止单击事件继续传递</a>
+
+        <br><br>
+        <!-- 提交事件不再重载页面 -->
+        <form @submit.prevent="warn('hello', $event)">submit.prevent提交事件不再重载页面</form>
+
+        <br><br>
+        <!-- 修饰符可以串联 -->
+        <a @click.stop.prevent="warn('hello', $event)">click.stop.prevent修饰符可以串联</a>
+
+        <br><br>
+        <!-- 只有修饰符 -->
+        <form @submit.prevent>submit.prevent只有修饰符</form>
+
+        <br><br>
+        <!-- 添加事件监听器时使用事件捕获模式 -->
+        <!-- 既元素自身出发的事件现在此处理, 然后再交由内部元素进行处理-->
+        <a @click.capture="see('我是a标签')">click.capture元素自身出发的事件现在此处理, 然后再交由内部元素进行处理<strong @click.capture="see('我是strong')">我是strong</strong></a>
+
+        <br><br>
+        <!-- 只当在 event.target 是当前元素自身时触发处理函数 -->
+        <!-- 既事件不是从内部元素触发的-->
+        <a @click.self="see('我是a标签')">click.self event.target是当前元素自身时触发处理函数<strong @click.capture="see('我是strong')">我是strong</strong></a>
+        
+        <br><br>
+        <!-- 点击事件将只会触发一次 -->
+        <a @click.once="see('我只触发一次')">click.once只触发一次</a>
+
+        <br><br>
+        <!-- 滚动事件完成再触发 -->
+        <div @scroll.passive="scrollEvt()" style="height: 100px; overflow: auto">
+            scroll.passive 边滚动边触发(没验证出来)
+
+            <p>内容内容内容内容内容内容内容</p>
+            <p>内容内容内容内容内容内容内容</p>
+            <p>内容内容内容内容内容内容内容</p>
+            <p>内容内容内容内容内容内容内容</p>
+            <p>内容内容内容内容内容内容内容</p>
+            <p>内容内容内容内容内容内容内容</p>
+            <p>内容内容内容内容内容内容内容</p>
+        
+        </div>
+
+        <h4>按键修饰符</h4>
+        <input @keyup.enter="see('按回车键了')" placeholder="按回车键">
+
+        <br><br>
+        <input @keyup.page-down="see('按page down键了')" placeholder="按page down键">
+
+        <br><br>
+        <input @keyup.up.down="see('按up或down键了')" placeholder="按up或down键">
+
+        <br><br>
+        <input @keyup.f1="see('按自定义的F1')"  placeholder="按f1键">
+
+        <br><br>
+        <input @keyup.alt.67="see('按alt+c了')" placeholder="按alt+c键">
+
+        <br><br>
+        <div @click.ctrl="see('按ctrl点击了')">按住ctrl点击</div>
+
+        <br><br>
+        <button @click.ctrl="see('按ctrl键点击了')">按ctrl键点击</button>
+
+        <br><br>
+        <button @click.ctrl.exact="see('只按ctrl键点击了')">.exact 只按ctrl键点击</button>
+
+        <br><br>
+        <button @click.exact="see('没有按修饰符点击了')">没有按修饰符键点击才触发</button>
+
+        <br><br>
+        <button @click.left="see('按鼠标左键了')">按鼠标左键</button>
+
+        <br><br>
+        <button @click.right="see('按鼠标右键了')">按鼠标右键</button>
+
+        <br><br>
+        <button @click.middle="see('按鼠标中键了')">按鼠标中键</button>
+
+
+        
+        
+
+    </ul>
+
+
+
+
+    <script src="/node_modules/vue/dist/vue.js"></script>
+    <script>
+
+        Vue.config.keyCodes.f1 = 112; //自定义键名
+
+        var vm = new Vue({
+            el: '#example1',
+            data() {
+                return {
+                    counter: 0,
+                    name: 'Vue.js'
+                };
+            },
+            methods: {
+                greet(event) {
+                    console.log(this.name);
+                    console.log(event.target.tagName);
+
+                },
+                see(msg) {
+                    console.log(msg);
+                },
+                warn(msg, event) {
+                     console.log(msg);
+                     console.log(event);
+                },
+                scrollEvt() {
+                    console.log('滚动中');
+                }
+            }
+        });
+    </script>
+</body>
+
+</html>

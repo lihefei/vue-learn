@@ -25,6 +25,56 @@
             {{key}}: {{name}} : {{index}}
         </li>
     </ul>
+
+    <ul id="example3">
+        <li v-for="item in items" :key="item.id">
+            {{item.message}}
+        </li>
+    </ul>
+    <ul id="example4">
+        <li v-for="item in items">
+            {{item}}
+        </li>
+    </ul>
+
+    <div id="example5">
+        <div v-for="(name, key, index) in userProfile">
+            {{key}} : {{name}}
+        </div>
+        
+    </div>
+
+    <ul id="example6">
+        <li v-for="n in evenNumbers">
+            {{n}}
+        </li>
+
+        <li v-for="n in even(numbers)">
+            {{n}}
+        </li>
+    </ul>
+
+    <ul id="example7">
+        <li v-for="n in 10">
+            {{n}}
+        </li>
+    </ul>
+
+
+    <ul id="example8">
+        <li v-for="(name, key) in todos" v-if="name <= 2">
+            {{key}}: {{name}}
+        </li>
+    </ul>
+
+
+
+    <ul id="example9">
+        <my-component  v-for="(todo, index) in todos" :todo="todo" :key="todo.id"></my-component>
+    </ul>
+
+
+
     <script src="/node_modules/vue/dist/vue.js"></script>
     <script>
 
@@ -34,10 +84,10 @@
                 return {
                     parentMessage: 'Parent',
                     items: [
-                        { message: 1111111111111 },
-                        { message: 2222222222222 },
-                        { message: 3333333343333 },
-                        { message: 4444444444444 }
+                        { message: 1111111111111, id: 1 },
+                        { message: 2222222222222, id: 2 },
+                        { message: 3333333343333, id: 3 },
+                        { message: 4444444444444, id: 4 }
                     ]
                 };
             }
@@ -55,6 +105,135 @@
                     };
                 }
             });
+
+        var vm = new Vue({
+                el: '#example3',
+                data() {
+                    return {
+                        items: [
+                            { message: 1111111111111, id: 1 },
+                            { message: 2222222222222, id: 2 },
+                            { message: 3333333343333, id: 3 },
+                            { message: 4444444444444, id: 4 }
+                        ]
+                    };
+                }
+            });
+
+
+        var vm = new Vue({
+            el: '#example4',
+            data() {
+                return {
+                    items: [
+                        11111111111,
+                        222222222222,
+                        333333333333333,
+                        44444444444444
+                    ]
+                };
+            }
+        });
+
+        //vm.items[0] = 1111; //不是响应式的
+        Vue.set(vm.items, 0, 1111); //有效
+        vm.$set(vm.items, 0, 1111); //有效
+        vm.items.splice(0, 1, 1111); //有效
+
+        //vm.items.length = 10; //不是响应式的
+        vm.items.splice(10); //有效
+
+
+
+
+
+        var vm = new Vue({
+                el: '#example5',
+                data() {
+                    return {
+                         userProfile: {
+                            name: 'Anika'
+                        }
+                    };
+                }
+            });
+
+        //vm.userProfile.age = 10;  //不是响应式的
+        Vue.set(vm.userProfile, 'age', 10); //有效
+        vm.$set(vm.userProfile, 'age', 10); //有效
+
+
+
+        /* 官方文档说无效，实测有效
+        Object.assign(vm.userProfile, {
+            age: 27,
+            favoriteColor: 'Vue Green'
+        });*/
+
+        vm.userProfile = Object.assign({}, vm.userProfile, { //有效
+            age: 27,
+            favoriteColor: 'Vue Green'
+        });
+
+
+        var vm = new Vue({
+                el: '#example6',
+                data() {
+                    return {
+                        numbers: [1, 2, 3, 4, 5]
+                    };
+                },
+                computed: {
+                    evenNumbers() {
+                        return this.numbers.filter(num => num % 2 === 0);
+                    }
+                },
+                methods: {
+                    even(nums) {
+                        return nums.filter(num => num % 2 === 0);
+                    }
+                }
+            });
+        
+
+        var vm = new Vue({
+                el: '#example7',
+                data: {}
+            });
+
+        var vm = new Vue({
+                el: '#example8',
+                data: {
+                    todos: {
+                        a: 1,
+                        b: 2,
+                        c: 3,
+                        d: 4
+                    }
+                }
+            });
+
+
+        Vue.component('my-component',{
+            props: ['todo'],
+            template: '<li>{{todo.title}}</li>'
+        })
+
+        var vm = new Vue({
+                el: '#example9',
+                data: {
+                   todos: [
+                       { id: 1, title: 'aaaaaaaaaaaaaa' },
+                       { id: 2, title: 'bbbbbbbbbbbbbb' },
+                       { id: 3, title: 'cccccccccccccc' }
+                   ]
+                }
+            });
+
+
+
+
+
 
 
     </script>
