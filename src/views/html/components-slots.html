@@ -1,0 +1,174 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="utf-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <title>components-title</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+
+</head>
+
+<body>
+    <div id="app">
+        <base-layout>
+            <template #header>
+                <h1>我是header</h1>
+            </template>
+            <template #default>
+                <p>我是main内容1</p>
+                <p>我是main内容2</p>
+            </template>
+
+
+            <template v-slot:footer>
+                <p>我是footer</p>
+            </template>
+
+
+        </base-layout>
+
+        <current-user :user="user">
+            <template #default="slotProps">
+                {{ slotProps.user.firstName }}
+            </template>
+        </current-user>
+
+
+        <child>
+            <template v-slot="props">
+                <li>{{props.value}}</li>
+            </template>
+        </child>
+
+        <child>
+            <template v-slot="props">
+                <h1>{{props.value}}</h1>
+            </template>
+        </child>
+
+        <child>
+            <template v-slot="{value}">
+                <li>{{value}}解构</li>
+            </template>
+        </child>
+
+        <child>
+            <template v-slot="{value: val}">
+                <li>{{val}}被重命名了</li>
+            </template>
+        </child>
+
+        <child>
+            <template v-slot="{value= 'xxxx'}">
+                <li>{{value}}值为undefined会取默认值xxxx</li>
+            </template>
+        </child>
+
+
+        <todo-list>
+            <template #todo="{value}">
+                <b>{{value}}</b>
+            </template>
+        </todo-list>
+        <todo-list>
+            <template #todo="{value}">
+                <s>{{value}}</s>
+            </template>
+        </todo-list>
+
+
+
+        <submit-button>1111111111</submit-button>
+
+    </div>
+
+    <script src="/node_modules/vue/dist/vue.js"></script>
+    <script>
+        Vue.component('submit-button', {
+            props: ['title'],
+            template: `<button type="submit">
+                <slot>Submit</slot>
+            </button>`
+        });
+
+
+        Vue.component('base-layout', {
+            template: `
+               <div class="container">
+                   <header>
+                       <slot name="header"></slot>
+                   </header>
+
+                   <main>
+                       <slot></slot>
+                   </main>
+
+                   <footer>
+                       <slot name="footer"></slot>
+                   </footer>
+               </div>
+            `
+        });
+
+
+        Vue.component('current-user', {
+            props: ['user'],
+            template: `
+                <span>
+                    <slot :user="user">
+                        {{ user.lastName }}
+                    </slot>
+                </span>
+            `
+        });
+
+        Vue.component('child', {
+            data: function () {
+                return {
+                    list: [undefined, 2, 3, 4]
+                }
+            },
+            template: '<div> <ul><slot v-for = "value in list" :value="value" > {{ value }} </slot> </ul></div>',
+        });
+
+        Vue.component('todo-list', {
+            data: function () {
+                return {
+                    list: ['a', 'b', 'c', 'd']
+                }
+            },
+            template: `
+            <div>
+                <ul>
+                    <li v-for="value in list">
+                        <slot :value="value" name="todo"> {{ value }} </slot>
+                    </li>
+                     
+                </ul>
+            </div>`,
+        });
+
+
+
+
+
+
+
+        let vm = new Vue({
+            el: '#app',
+            data: {
+                lovingVue: true,
+                label: 'xxxxx',
+                value: 'aaaaa',
+                title: '费加快递费',
+                user: {
+                    firstName: 'hefei',
+                    lastName: 'li'
+                }
+            }
+        });
+    </script>
+</body>
+
+</html>

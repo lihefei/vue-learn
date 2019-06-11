@@ -1,16 +1,16 @@
 <template>
-  <div class="">
-    aaaaaaaaaaaaaaaaaaaaaaaa
-  </div>
+    <div class="">
+        aaaaaaaaaaaaaaaaaaaaaaaa
+    </div>
 </template>
 
-<script type="text/ecmascript-6">
+<script >
 export default {
-  name: "",
-  data() {
-    return {};
-  },
-  components: {}
+    name: '',
+    data() {
+        return {};
+    },
+    components: {}
 };
 </script>
 

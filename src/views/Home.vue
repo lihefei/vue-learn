@@ -1,22 +1,16 @@
 <template>
-  <div class="home">
-    <ComponentA />
-    <ComponentB />
-    <ComponentC />
-  </div>
+    <div class="home">
+        <ComponentA />
+    </div>
 </template>
 
 <script>
-import ComponentA from "@/components/ComponentA.vue";
-import ComponentB from "@/components/ComponentB.vue";
-import ComponentC from "@/components/ComponentC.vue";
+import ComponentA from '@/components/ComponentA.vue';
 
 export default {
-  name: "home",
-  components: {
-    ComponentA,
-    ComponentB,
-    ComponentC
-  }
+    name: 'home',
+    components: {
+        ComponentA
+    }
 };
 </script>

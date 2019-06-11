@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="utf-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <title>components-title</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+
+</head>
+
+<body>
+    <div id="app">
+        <button @click="printRoot">打印root</button>
+
+        <read-parent :parent-obj="that"></read-parent>
+
+        <base-input ref="input"></base-input>
+        <base-input2></base-input2>
+
+        <stack-overflow v-if="that"></stack-overflow>
+    </div>
+
+    <script src="/node_modules/vue/dist/vue.js"></script>
+    <script>
+        Vue.component('read-parent', {
+            props: ['parentObj'],
+            template: '<button @click="printParent()">打印Parent</button>',
+            methods: {
+
+                printParent() {
+                    debugger;
+                    console.log(this.parentObj);
+                }
+            }
+        });
+
+        Vue.component('base-input', {
+            template: `<input @click="$emit('parent-focus')" value="1234">`,
+        });
+
+        Vue.component('base-input2', {
+            template: `<input ref="input" @click="childFocus" value="456">`,
+            methods: {
+                childFocus() {
+                    debugger;
+                    console.log(111);
+                    this.$refs.input.focus(); //组件内部this.$refs.input访问元素
+                }
+            }
+        });
+
+        Vue.component('stack-overflow', {
+            template: `<div><stack-overflow></stack-overflow></div>`
+        });
+
+        let vm = new Vue({
+            el: '#app',
+            data: {
+                that: null
+            },
+
+            methods: {
+                printRoot() {
+
+                    this.that = this.$root;
+                    console.log(this.that);
+                    this.parentFocus();
+                },
+                parentFocus() {
+                    debugger;
+                    console.log(111);
+                    this.$refs.input.$el.focus(); //this.$refs.input在父组件是访问子组件实例对象
+                }
+            }
+        });
+    </script>
+    <style>
+
+    </style>
+</body>
+
+</html>

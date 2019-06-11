@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="utf-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <title>components-title</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+
+</head>
+
+<body>
+    <div id="app">
+        <base-checkbox v-model="lovingVue"></base-checkbox>
+        <base-input v-on:focus.native="onFocus" :label="label" :value="value"></base-input>
+        <text-document :title.sync="title" :title="title"><i>ssssssss {{value}}</i>fdsfdsfdsf</text-document>
+
+        <text-document2 v-bind.sync="doc" :doc="doc"></text-document2>
+    </div>
+
+    <script src="/node_modules/vue/dist/vue.js"></script>
+    <script>
+        Vue.component('base-checkbox', {
+            model: {
+                prop: 'checked',
+                event: 'change'
+            },
+            props: {
+                checked: Boolean
+            },
+            template: `
+                <input type="checkbox" v-bind:checked="checked" v-on:change="$emit('change', $event.target.checked)">
+            `
+        });
+
+        Vue.component('base-input', {
+            inheritAttrs: false,
+            props: ['label', 'value'],
+            computed: {
+                inputListeners: function () {
+                    var vm = this
+                    // `Object.assign` 将所有的对象合并为一个新对象
+                    return Object.assign({},
+                        // 我们从父级添加所有的监听器
+                        this.$listeners,
+                        // 然后我们添加自定义监听器，
+                        // 或覆写一些监听器的行为
+                        {
+                            // 这里确保组件配合 `v-model` 的工作
+                            input: function (event) {
+                                vm.$emit('input', event.target.value)
+                            }
+                        }
+                    )
+                }
+            },
+            template: `
+                <label>
+                    {{ label }}
+                    <input v-bind="$attrs" v-bind:value="value" v-on="inputListeners">
+                </label>
+                `
+        });
+
+        Vue.component('text-document', {
+            props: ['title'],
+            template: `<p @click="$emit('update:title', '哈哈')">{{title}}<slot></slot>
+            </p>`
+        });
+
+        Vue.component('text-document2', {
+            props: ['doc'],
+            template: `
+                <div>
+                    <h3 @click="$emit('update:doc.title', '新标题')">{{doc.title}}</h3>
+                    <div @click="$emit('update:doc.content', '<i>新内容</i>')" v-html="doc.content"></div>
+                </div>
+                `
+        });
+
+
+        let vm = new Vue({
+            el: '#app',
+            data: {
+                lovingVue: true,
+                label: 'xxxxx',
+                value: 'aaaaa',
+                title: '费加快递费',
+                doc: {
+                    title: '标题标题标题',
+                    content: '<strong>内容内容内容内容</stong>'
+                }
+            },
+            methods: {
+                onFocus() {
+                    console.log(this.value);
+                }
+            }
+        });
+    </script>
+</body>
+
+</html>
