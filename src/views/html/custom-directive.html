@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="utf-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <title></title>
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+
+
+</head>
+
+<body>
+    <div id="app">
+        <input v-focus="flag">
+        <my-component></my-component>
+
+
+
+
+
+    </div>
+
+    <div id="hook-arguments-example" v-demo:foo.a.b="message"></div>
+
+    <script src="/node_modules/vue/dist/vue.js"></script>
+    <script>
+        Vue.directive('focus', {
+            inserted: function (el) {
+                el.focus()
+            }
+        })
+
+
+        Vue.component('my-component', {
+            data() {
+                return {
+                    flag: true
+                };
+            },
+            directive: {
+                focus: {
+                    inserted: function (el) {
+                        el.focus();
+                    }
+                }
+            },
+            template: '<input v-focus="flag">'
+        });
+
+
+        new Vue({
+            el: '#app',
+            data() {
+                return {
+                    flag: true
+                };
+            }
+        });
+
+        Vue.directive('demo', {
+            bind: function (el, binding, vnode) {
+                var s = JSON.stringify
+                el.innerHTML =
+                    'name: ' + s(binding.name) + '<br>' +
+                    'value: ' + s(binding.value) + '<br>' +
+                    'expression: ' + s(binding.expression) + '<br>' +
+                    'argument: ' + s(binding.arg) + '<br>' +
+                    'modifiers: ' + s(binding.modifiers) + '<br>' +
+                    'vnode keys: ' + Object.keys(vnode).join(', ')
+            }
+        })
+        new Vue({
+            el: '#hook-arguments-example',
+            data: {
+                message: 'hello!'
+            }
+        })
+    </script>
+
+</body>
+
+</html>

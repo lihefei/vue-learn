@@ -5,12 +5,21 @@
 </template>
 
 <script >
+import AnchoredHeading from './AnchoredHeading.vue';
 export default {
     name: '',
     data() {
-        return {};
+        return {
+            items: ['aaa', 'bbb', 'ccc', 'ddd', 'eee']
+        };
     },
-    components: {}
+    render: function(h) {
+        return (
+            <AnchoredHeading level={items}>
+                <span>Hello</span> world!
+            </AnchoredHeading>
+        );
+    }
 };
 </script>
 

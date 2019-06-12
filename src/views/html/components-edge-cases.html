@@ -19,7 +19,22 @@
         <base-input2></base-input2>
 
         <stack-overflow v-if="that"></stack-overflow>
+
+        <my-component inline-template>
+            <div>
+                <p>These are compiled as the component's own template.</p>
+                <p>Not parent's transclusion content.</p>
+            </div>
+        </my-component>
+
+        <hello-world-template></hello-world-template>
+
+        <terms-of-service></terms-of-service>
+
     </div>
+    <script type="text/x-template" id="helloWorldTemplate">
+        <p>Hello hello hello</p>
+    </script>
 
     <script src="/node_modules/vue/dist/vue.js"></script>
     <script>
@@ -54,6 +69,25 @@
             template: `<div><stack-overflow></stack-overflow></div>`
         });
 
+
+        Vue.component('my-component', {
+            template: `<section><h1>我是原始模版</h1></section>`
+        });
+
+
+        Vue.component('hello-world-template', {
+            template: '#helloWorldTemplate'
+        });
+
+        Vue.component('terms-of-service', {
+            template: `
+            <div v-once>
+                <h1>我是静态内容，模板中设置v-once只渲染一次</h1>
+            </div>`
+        });
+
+
+
         let vm = new Vue({
             el: '#app',
             data: {
@@ -66,6 +100,7 @@
                     this.that = this.$root;
                     console.log(this.that);
                     this.parentFocus();
+                    this.$forceUpdate(); //强制更新
                 },
                 parentFocus() {
                     debugger;

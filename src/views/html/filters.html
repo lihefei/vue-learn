@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="utf-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <title>components-title</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+
+</head>
+
+<body>
+    <div id="app">
+
+        <p v-for="item in items">
+            {{ item | toHump}}
+        </p>
+
+    </div>
+
+
+    <script src="/node_modules/vue/dist/vue.js"></script>
+    <script>
+        Vue.filter('toHump', function (value) {
+            if (!value) {
+                return '';
+            }
+
+            var arr = value.toString().split('-');
+            if (arr.length > 1) {
+                return arr.map(function (str, index) {
+                    return index ? str.charAt(0).toUpperCase() + str.slice(1) : str;
+                }).join('');
+            } else {
+                return arr.join('');
+            }
+        });
+
+        let vm = new Vue({
+            el: '#app',
+            data: {
+                items: [
+                    'itme-aaa',
+                    'itme-bbb-xxx',
+                    'itme-ccc-xxx-vvv',
+                    ''
+                ]
+            }
+        });
+    </script>
+    <style>
+
+    </style>
+</body>
+
+</html>

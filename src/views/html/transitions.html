@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="utf-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <title>transitions</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <link href="https://cdn.jsdelivr.net/npm/animate.css@3.5.1" rel="stylesheet" type="text/css">
+
+    <style>
+        .fade-enter-active,
+        .fade-leave-active {
+            transition: opacity .5s;
+        }
+
+        .fade-enter,
+        .fade-leave-to {
+            opacity: 0;
+        }
+    </style>
+</head>
+
+<body>
+    <div id="app">
+        <button @click="show = !show">toggle</button>
+        <transition name="fade">
+            <p v-if="show">hello</p>
+        </transition>
+
+
+        <button @click="show2 = !show2">
+            Toggle render
+        </button>
+        <transition name="custom-classes-transition" enter-active-class="animated tada"
+            leave-active-class="animated bounceOutRight">
+            <p v-if="show2">hello</p>
+        </transition>
+
+        <div id="animated-number-demo">
+            <input v-model.number="number" type="number" step="20">
+            <p>{{ animatedNumber }}</p>
+        </div>
+
+    </div>
+
+    <script src="/node_modules/vue/dist/vue.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/1.20.3/TweenMax.min.js"></script>
+    <script>
+        var a = 0
+        new Vue({
+            el: '#app',
+            data: {
+                show: true,
+                show2: true
+            }
+        });
+
+        new Vue({
+            el: '#animated-number-demo',
+            data: {
+                number: 0,
+                tweenedNumber: 0
+            },
+            computed: {
+                animatedNumber: function () {
+                    return this.tweenedNumber.toFixed(0);
+                }
+            },
+            watch: {
+                number: function (newValue) {
+                    TweenLite.to(this.$data, 0.5, {
+                        tweenedNumber: newValue
+                    });
+                }
+            }
+        })
+    </script>
+
+</body>
+
+</html>

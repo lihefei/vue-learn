@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="utf-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <title>transitions</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+
+
+</head>
+
+<body>
+    <div id="app">
+    </div>
+
+    <script src="/node_modules/vue/dist/vue.js"></script>
+    <script>
+        var myMixin = {
+            data() {
+                return {
+                    message: 'hello',
+                    foo: 'abc'
+                }
+            }
+        };
+
+
+
+        new Vue({
+            mixins: [myMixin],
+            data() {
+                return {
+                    message: 'goodbye',
+                    bar: 'def'
+                }
+            },
+            created() {
+                console.log(this.$data);
+            }
+        });
+
+
+        var mixin = {
+            created: function () {
+                console.log('我是混入对象的钩子');
+            }
+        };
+
+        new Vue({
+            mixins: [mixin],
+            created: function () {
+                console.log('我是自身的钩子');
+            }
+        });
+
+
+
+        var mixin = {
+            methods: {
+                foo: function () {
+                    console.log('foo')
+                },
+                conflicting: function () {
+                    console.log('from mixin')
+                }
+            }
+        };
+
+        var vm = new Vue({
+            mixins: [mixin],
+            methods: {
+                bar: function () {
+                    console.log('bar')
+                },
+                conflicting: function () {
+                    console.log('from self')
+                }
+            }
+        });
+
+        vm.conflicting();
+    </script>
+
+</body>
+
+</html>

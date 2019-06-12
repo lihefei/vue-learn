@@ -1,0 +1,154 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="utf-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <title></title>
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+
+
+</head>
+
+<body>
+    <div id="app">
+        <button @click="num += 1">change</button>
+        <anchored-heading :level="num">
+            我是h{{num}}元素
+        </anchored-heading>
+
+        <anchored-heading2 :level="num">Hello world!</anchored-heading2>
+
+        <my-component :items="items"></my-component>
+
+        <v-model-exmaple :value="value" @input="value = $event"></v-model-exmaple>{{value}}
+
+
+    </div>
+
+    <script type="text/x-template" id="anchored-heading-template">
+        <h1 v-if="level === 1">
+            <slot></slot>
+        </h1>
+        <h2 v-else-if="level === 2">
+            <slot></slot>
+        </h2>
+        <h3 v-else-if="level === 3">
+            <slot></slot>
+        </h3>
+        <h4 v-else-if="level === 4">
+            <slot></slot>
+        </h4>
+        <h5 v-else-if="level === 5">
+            <slot></slot>
+        </h5>
+        <h6 v-else-if="level === 6">
+            <slot></slot>
+        </h6>
+    </script>
+
+    <script src="/node_modules/vue/dist/vue.js"></script>
+    <script>
+        Vue.component('anchored-heading', {
+            template: '#anchored-heading-template',
+            props: {
+                level: {
+                    type: Number,
+                    required: true
+                }
+            }
+        })
+
+        Vue.component('myComponent', {
+            props: ['items'],
+            render(createElement) {
+                if (this.items.length) {
+                    return createElement('ul', this.items.map(function (item) {
+                        return createElement('li', item);
+                    }));
+
+                } else {
+                    return createElement('p', '没有找到项目')
+                }
+            }
+        });
+
+
+        var getChildrenTextContent = function (children) {
+            return children.map(function (node) {
+                return node.children ? getChildrenTextContent(node) : node.text
+            }).join('');
+        }
+
+        Vue.component('anchored-heading2', {
+            props: {
+                level: {
+                    type: Number,
+                    required: true
+                }
+            },
+            render(createElement) {
+                var headingId = getChildrenTextContent(this.$slots.default)
+                    .toLowerCase()
+                    .replace(/\W+/g, '-')
+                    .replace(/(^-|-$)/g, '');
+
+                return createElement(
+                    'h' + this.level,
+                    [
+                        createElement('a', {
+                            attrs: {
+                                name: headingId,
+                                href: '#' + headingId
+                            }
+                        }, this.$slots.default)
+                    ]
+                );
+            }
+        });
+
+
+        Vue.component('v-model-exmaple', {
+            props: ['value'],
+            render: function (createElement) {
+                var self = this
+                return createElement('input', {
+                    domProps: {
+                        value: self.value
+                    },
+                    on: {
+                        input: function (event) {
+                            self.$emit('input', event.target.value)
+                        }
+                    }
+                })
+            }
+        })
+
+        // // @returns {VNode}
+        // createElement('div', {}, [
+        //     '先写一些文字',
+        //     createElement('h1', '一则头条'),
+        //     createElement(MyComponent, {
+        //         props: {
+        //             someProp: 'foobar'
+        //         }
+        //     })
+        // ])
+
+
+        new Vue({
+            el: '#app',
+            data() {
+                return {
+                    num: 1,
+                    items: ['aaa', 'bbb', 'ccc', 'ddd', 'eee'],
+                    value: ''
+                };
+            }
+        });
+    </script>
+
+</body>
+
+</html>
