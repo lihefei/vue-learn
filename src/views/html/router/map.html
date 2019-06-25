@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <meta http-equiv="X-UA-Compatible" content="ie=edge" />
+        <title>Document</title>
+        <style>
+            html,
+            body,
+            #allmap {
+                height: 100%;
+            }
+            body {
+                margin: 0;
+            }
+        </style>
+    </head>
+    <body>
+        <div id="allmap"></div>
+        <script src="http://api.map.baidu.com/api?v=2.0&ak=PYII20buMkHOoAH5U2CdHkmKxo9cqBtr"></script>
+
+        <script type="text/javascript">
+            const map = new BMap.Map('allmap');
+            const point = new BMap.Point(116.404, 39.915);
+            map.centerAndZoom(point, 15);
+
+            const marker = new BMap.Marker(point); // 创建标注
+            map.addOverlay(marker);
+
+            const circle = new BMap.Circle(point, 1000, {
+                strokeColor: 'blue',
+                strokeWeight: 2,
+                strokeOpacity: 0.5
+            }); //创建圆
+            map.addOverlay(circle);
+
+            changePosition();
+
+            function changePosition() {
+                setInterval(function() {
+                    const point = new BMap.Point(116.414, 39.915);
+
+                    marker.setPosition(point);
+                    circle.setCenter(point);
+                }, 1000);
+            }
+        </script>
+    </body>
+</html>

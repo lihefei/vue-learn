@@ -16,6 +16,8 @@
             </p>
 
             <router-view></router-view>
+            <router-view name="a"></router-view>
+            <router-view name="b"></router-view>
         </div>
 
         <script src="../../../../node_modules/vue/dist/vue.js"></script>
@@ -25,10 +27,66 @@
                 template: '<p>foo</p>'
             };
             const Bar = {
-                template: '<p>bar</p>'
+                template: '<p>bar<button @click="goBack">返回</button></p>',
+                methods: {
+                    goBack() {
+                        //debugger;
+                        // window.history.length > 1
+                        //     ? this.$router.go(-1)
+                        //     : this.$router.push('/');
+                        // this.$router.push({
+                        //     //name: 'user',
+                        //     //params: { id: '123' }
+                        //     path: '/foo',
+                        //     query: { plan: 'private' }
+                        // });
+
+                        this.$router.replace(
+                            '/foo',
+                            function() {
+                                console.log(111);
+                            },
+                            function() {
+                                console.log(222);
+                            }
+                        );
+                    }
+                }
+            };
+
+            const User = {
+                template: `<div>
+                    <h2>User {{$route.params.id}}</h2>
+                    <router-view></router-view>
+                    </div>`,
+                watch: {
+                    $route(to, from) {
+                        console.log(to);
+                    }
+                }
+            };
+
+            const UserHome = {
+                template: '<div>userhome</div>'
+            };
+
+            const UserProfile = {
+                template: '<div>userprofile</div>'
+            };
+
+            const NotFoud = {
+                template: '<div>404</div>'
             };
 
             let routes = [
+                {
+                    path: '/',
+                    components: {
+                        default: Foo,
+                        a: Foo,
+                        b: Bar
+                    }
+                },
                 {
                     name: 'foo',
                     path: '/foo',
@@ -38,6 +96,26 @@
                     name: 'bar',
                     path: '/bar',
                     component: Bar
+                },
+                {
+                    name: 'user',
+                    path: '/user/:id',
+                    component: User,
+                    children: [
+                        {
+                            path: 'profile',
+                            component: UserProfile
+                        },
+                        {
+                            path: '',
+                            component: UserHome
+                        }
+                    ]
+                },
+                {
+                    // 会匹配所有路径
+                    path: '*',
+                    component: NotFoud
                 }
             ];
 
